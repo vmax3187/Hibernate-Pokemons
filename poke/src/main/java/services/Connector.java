@@ -23,6 +23,7 @@ public class Connector {
 		String json = client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body)
 				.join();
 		Movimiento m = new GsonBuilder().create().fromJson(json, Movimiento.class);
-		return m;
+		m.resolverTipo();  
+		return m;		
 	}
 }

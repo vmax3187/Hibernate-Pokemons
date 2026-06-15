@@ -20,62 +20,41 @@ public class Pokemon {
 	private int weight; // en hectogramos
 // Relación con Movimiento (ver Paso 7)
 
-	@ManyToMany(cascade = CascadeType.PERSIST)
-	@JoinTable(name = "pokemon_movimiento", joinColumns = @JoinColumn(name = "pokemon_id"), inverseJoinColumns = @JoinColumn(name = "movimiento_id"))
+	@ManyToMany(cascade = {CascadeType.MERGE})
+	@JoinTable(
+	    name = "pokemon_movimiento",
+	    joinColumns = @JoinColumn(name = "pokemon_id"),
+	    inverseJoinColumns = @JoinColumn(name = "movimiento_id")
+	)
 	private List<Movimiento> movimientos = new ArrayList<>();
 
+	@Transient
+	private List<MoveWrapper> moves;
+	
+	public static class MoveWrapper {
+		public MoveInfo move;
+		public static class MoveInfo {
+		public String name;
+		public String url;
+		}
+		}
 	public void addMovimiento(Movimiento m) {
 		movimientos.add(m);
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getBase_experience() {
-		return base_experience;
-	}
-
-	public void setBase_experience(int base_experience) {
-		this.base_experience = base_experience;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public int getWeight() {
-		return weight;
-	}
-
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
-
-	public List<Movimiento> getMovimientos() {
-		return movimientos;
-	}
-
-	public void setMovimientos(List<Movimiento> movimientos) {
-		this.movimientos = movimientos;
-	}
-	
+	public long getId() { return id; }
+	public void setId(long id) { this.id = id; }
+	public String getName() { return name; }
+	public void setName(String name) { this.name = name; }
+	public int getBase_experience() { return base_experience; }
+	public void setBase_experience(int v) { this.base_experience = v; }
+	public int getHeight() { return height; }
+	public void setHeight(int h) { this.height = h; }
+	public int getWeight() { return weight; }
+	public void setWeight(int w) { this.weight = w; }
+	public List<Movimiento> getMovimientos() { return movimientos; }
+	public List<MoveWrapper> getMoves() { return moves; }
+	public void setMoves(List<MoveWrapper> m) { this.moves = m; }
 	@Override
 	public String toString() {
 	return "Pokemon[id=" + id + ", name=" + name +
